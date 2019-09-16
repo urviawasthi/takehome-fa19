@@ -74,6 +74,15 @@ def delete_show(id):
 def getContactId(id): 
 	return create_response({"contacts": db.getById('contacts', int(id))})
 
+@app.route("/contacts", methods=['POST'])
+def createContact(): 
+    
+    name = request.json.get("name"); 
+    nickname = request.json.get("nickname"); 
+    hobby = request.json.get("hobby"); 
+    db.create('contacts', {"name": name, "nickname": nickname, "hobby": hobby}); 
+    return create_response(status = 201, data = {"contacts": db.get('contacts')})
+
 """
 ~~~~~~~~~~~~ END API ~~~~~~~~~~~~
 """
