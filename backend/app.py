@@ -76,18 +76,29 @@ def getContactId(id):
 
 @app.route("/contacts", methods=['POST'])
 def createContact(): 
-    name = request.json.get("name"); 
-    nickname = request.json.get("nickname"); 
-    hobby = request.json.get("hobby"); 
+    name = request.json.get("name") 
+    nickname = request.json.get("nickname") 
+    hobby = request.json.get("hobby") 
     if name is None: 
         return create_response(status=404, message="No name provided")
     if nickname is None: 
         return create_response(status=404, message="No nickname provided")
     if hobby is None: 
         return create_response(status=404, message="No hobby provided")    
-    db.create('contacts', {"name": name, "nickname": nickname, "hobby": hobby}); 
+    db.create('contacts', {"name": name, "nickname": nickname, "hobby": hobby})
     return create_response(status = 201, data = {"contacts": db.get('contacts')})
 
+@app.route("/contacts/<id>", methods=['PUT'])
+def updateContact(id): 
+    if db.getById('contacts', int(id)) is None:
+        return create_response(status=404, message="No contact with this id exists")
+    name = request.json.get("name")
+    hobby = request.json.get("hobby")
+    if name is not None: 
+        db.updateById('contacts', int(id), {"name": name}) 
+    if hobby is not None: 
+        db.updateById('contacts', int(id), {"hobby": hobby}) 
+    return create_response(status = 201, data = {"contacts": db.getById('contacts', int(id))})
 """
 ~~~~~~~~~~~~ END API ~~~~~~~~~~~~
 """
