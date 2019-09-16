@@ -76,10 +76,15 @@ def getContactId(id):
 
 @app.route("/contacts", methods=['POST'])
 def createContact(): 
-    
     name = request.json.get("name"); 
     nickname = request.json.get("nickname"); 
     hobby = request.json.get("hobby"); 
+    if name is None: 
+        return create_response(status=404, message="No name provided")
+    if nickname is None: 
+        return create_response(status=404, message="No nickname provided")
+    if hobby is None: 
+        return create_response(status=404, message="No hobby provided")    
     db.create('contacts', {"name": name, "nickname": nickname, "hobby": hobby}); 
     return create_response(status = 201, data = {"contacts": db.get('contacts')})
 
