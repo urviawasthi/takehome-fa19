@@ -43,7 +43,7 @@ def create_response(
 
 @app.route("/")
 def hello_world():
-    return create_response({"content": "hello klj!"})
+    return create_response({"content": "hello huh!"})
 
 
 @app.route("/mirror/<name>")
@@ -52,8 +52,14 @@ def mirror(name):
     return create_response(data)
 
 @app.route("/contacts", methods=['GET'])
-def get_all_contacts():
-    return create_response({"contacts": db.get('contacts')})
+def get_contacts():
+    hobby = request.args.get('hobby')  
+    if (hobby is None):
+        return create_response({"contacts": db.get('contacts')})
+    if db.getByHobby('contacts', hobby) is None:
+        return create_response(status=404, message="No contact with this id exists")
+    return create_response({"contacts": db.getByHobby('contacts', hobby)}) 
+    
 
 @app.route("/shows/<id>", methods=['DELETE'])
 def delete_show(id):
@@ -67,13 +73,6 @@ def delete_show(id):
 @app.route("/contacts/<id>", methods=['GET'])
 def getContactId(id): 
 	return create_response({"contacts": db.getById('contacts', int(id))})
-	
-""" @app.route(/contacts/"contacts?hobby=<hobby>", methods=['GET'])
-def getContactByHobby(): 
-	#no hobby is returned if specified hobby does not exist
-	if db.getById('contacts', int(id)) is None:
-		return create_response(status=404, message="No contact with this id exists")
-	return create_response({"contacts": db.get('hobby')}) """
 
 """
 ~~~~~~~~~~~~ END API ~~~~~~~~~~~~
