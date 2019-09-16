@@ -1,13 +1,18 @@
 import React, { Component } from 'react'
 
-class App extends Component {
+class Contact extends Component {
   // YOUR CODE GOES BELOW
   
   render() {
     return (
-      <div/> 
+        <div>
+            <p> {this.props.id} </p>
+            <p> {this.props.name} </p>
+            <p> {this.props.nickname} </p>
+            <p> {this.props.hobby} </p>
+        </div> 
     )
   }
 }
 
-export default App
+export default Contact
